@@ -1,0 +1,10 @@
+doctype html
+html(lang="en")
+  head
+    title.
+        Webcam
+  body
+    div(style="text-align: center;")
+        video#video(src='/video.ogv' autoplay muted style="width: 50em;")
+    script.
+        setTimeout(_ => document.getElementById('video').play(), 1000);

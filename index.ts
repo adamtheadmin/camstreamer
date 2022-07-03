@@ -1,6 +1,4 @@
-import getWebcamStream from './modules/GetWebcamStream';
+import app from './modules/App';
 
-(async () => {
-    const stream = await getWebcamStream();
-    stream.pipe(process.stdout);
-})();
+const port = process.env.PORT || 8080;
+app.listen(+port, () => console.log(`Camera ready at on port ${port}`));
