@@ -1,10 +1,9 @@
 import readline from 'readline';
-import { stdin as input, stdout as output } from 'node:process';
 import {promises} from 'fs';
 import {execFileSync} from 'child_process';
 import path from "path";
 
-const rl = readline.createInterface({ input, output });
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
 async function requestInput(question: string):Promise<any> {
    return new Promise((resolve) => {
