@@ -1,0 +1,15 @@
+[Unit]
+Description=Cam Streamer
+After=network.target
+
+[Service]
+Environment=PORT=%port%
+WorkingDirectory=%currentdirectory%
+ExecStart=%pathtonode% %pathtoindex%
+
+RestartSec=5
+Restart=always
+User=%user%
+
+[Install]
+WantedBy=multi-user.target
