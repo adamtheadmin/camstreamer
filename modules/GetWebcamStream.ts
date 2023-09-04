@@ -1,7 +1,9 @@
-import {ChildProcessWithoutNullStreams, spawn} from 'child_process';
 import os from 'os';
+import {ChildProcessWithoutNullStreams, spawn} from 'child_process';
 
-export default function GetWebcamStream():ChildProcessWithoutNullStreams {
+let encodingProcess: ChildProcessWithoutNullStreams[] = [];
+
+export default function GetWebcamStream(): { stream: ChildProcessWithoutNullStreams; kill: () => void } {
     let command: string[];
     switch (os.platform()) {
         case 'darwin':
@@ -14,9 +16,21 @@ export default function GetWebcamStream():ChildProcessWithoutNullStreams {
 
         default:
             throw new Error(`Sorry, your platform ${os.platform()} is not supported.`);
-
     }
+
     const pc = spawn('ffmpeg', [...command, '-c:v', 'libtheora', '-q:v', '7', '-c:a', 'libvorbis', '-q:a', '4', '-f', 'ogv', '-']);
-    pc.stderr.pipe(process.stderr);
-    return pc;
+
+    pc.stdout.on('unpipe', () => {
+        pc.kill('SIGINT');
+    });
+
+    const kill = () => {
+        pc.kill('SIGINT');
+    };
+
+    return {
+        stream: pc,
+        kill
+    };
 }
+
